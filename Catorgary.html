@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelForge</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      padding-bottom: 60px;
+      overflow-x: hidden;
+    }
+
+    /* Preloader */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0f0f0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    #preloader span {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #fff;
+      border-top: 5px solid #ff4747;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.9);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header .title {
+      font-size: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    header .search-bar {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    header .search-bar input {
+      border: none;
+      background: transparent;
+      color: #fff;
+      outline: none;
+      margin-left: 5px;
+      font-size: 14px;
+      width: 120px;
+    }
+
+    /* Landing Section */
+    .landing {
+      height: 60vh;
+      background: url('/img/ w.gif') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      animation: fadeIn 2s ease-out;
+    }
+
+    .landing h1 {
+      font-size: 3.5rem;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    }
+
+    .landing p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+
+    /* Category Sections */
+    .section {
+      padding: 40px 20px;
+    }
+
+    .section h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .category-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .category-card {
+      background: #181818;
+      border-radius: 10px;
+      width: 220px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s;
+    }
+
+    .category-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .category-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .category-card h4 {
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  .bottom-nav a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    text-align: center;
+    font-size: 12px;
+    transition: color 0.3s ease;
+  }
+
+  .bottom-nav a i {
+    font-size: 24px;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .bottom-nav a.active, 
+  .bottom-nav a:hover {
+    color: #1db954; /* Spotify Green for active link */
+  }
+
+  /* Adding the blending hover effect */
+  .bottom-nav a:hover i {
+    transform: scale(1.2);
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  .bottom-nav-blur {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+    pointer-events: none;
+    z-index: 999;
+  }
+  </style>
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="preloader">
+    <span></span>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="title">PixelForge</div>
+    <div class="search-bar">
+      <i class="material-icons">search</i>
+      <input type="text" id="search-input" placeholder="Search categories...">
+    </div>
+  </header>
+
+  <!-- Landing Section -->
+  <section class="landing">
+    <h1>Welcome to PixelForge</h1>
+    <p>Discover Mods, Shaders, Maps, and Clients for Java and Bedrock Editions!</p>
+  </section>
+
+  <!-- Java Edition -->
+  <section class="section">
+    <h2>Java Edition</h2>
+    <div class="category-container">
+      <div class="category-card" data-title="Java Mods">
+        <img src="java-mods.jpg" alt="Java Mods">
+        <h4>Mods</h4>
+      </div>
+      <div class="category-card" data-title="Java Shaders">
+        <img src="java-shaders.jpg" alt="Java Shaders">
+        <h4>Shaders</h4>
+      </div>
+      <div class="category-card" data-title="Java Maps">
+        <img src="java-maps.jpg" alt="Java Maps">
+        <h4>Maps</h4>
+      </div>
+      <div class="category-card" data-title="Java Clients">
+        <img src="java-clients.jpg" alt="Java Clients">
+        <h4>Clients</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bedrock Edition -->
+  <section class="section">
+    <h2>Bedrock Edition</h2>
+    <div class="category-container">
+      <div class="category-card" data-title="Bedrock Mods">
+        <img src="bedrock-mods.jpg" alt="Bedrock Mods">
+        <h4>Mods</h4>
+      </div>
+      <div class="category-card" data-title="Bedrock Shaders">
+        <img src="bedrock-shaders.jpg" alt="Bedrock Shaders">
+        <h4>Shaders</h4>
+      </div>
+      <div class="category-card" data-title="Bedrock Maps">
+        <img src="bedrock-maps.jpg" alt="Bedrock Maps">
+        <h4>Maps</h4>
+      </div>
+      <div class="category-card" data-title="Bedrock Clients">
+        <img src="bedrock-clients.jpg" alt="Bedrock Clients">
+        <h4>Clients</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav-blur"></div>
+<div class="bottom-nav">
+  <a href="index.html" class="active">
+    <i class="material-icons">home</i>
+    <span>Home</span>
+  </a>
+  <a href="Catorgary.html">
+    <i class="material-icons">category</i>
+    <span>Categories</span>
+  </a>
+  <a href="#">
+    <i class="material-icons">update</i>
+    <span>Updates</span>
+  </a>
+  <a href="#">
+    <i class="material-icons">settings</i>
+    <span>Settings</span>
+  </a>
+</div>
+
+  <!-- JavaScript -->
+  <script>
+    // Preloader
+    window.addEventListener('load', () => {
+      document.getElementById('preloader').style.display = 'none';
+    });
+
+    // Search Functionality
+    const searchInput = document.getElementById('search-input');
+    const categories = document.querySelectorAll('.category-card');
+
+    searchInput.addEventListener('input', (e) => {
+      const searchValue = e.target.value.toLowerCase();
+      categories.forEach((category) => {
+        const title = category.getAttribute('data-title').toLowerCase();
+        category.style.display = title.includes(searchValue) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
