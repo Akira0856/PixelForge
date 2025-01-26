@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Bedrock Mods</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      padding-bottom: 70px; /* Space for bottom navigation */
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.9);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header .title {
+      font-size: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    header .search-bar {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    header .search-bar input {
+      border: none;
+      background: transparent;
+      color: #fff;
+      outline: none;
+      margin-left: 5px;
+      font-size: 14px;
+      width: 120px;
+    }
+
+    /* Landing Section */
+    .landing {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+
+    .landing h1 {
+      font-size: 2.5rem;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    /* Cards Section */
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      margin: 0 auto;
+      max-width: 1200px;
+    }
+
+    .card {
+      background: #181818;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      animation: fadeUp 0.5s ease forwards;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-content {
+      padding: 15px;
+    }
+
+    .card-content h4 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .card-content p {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .card-content a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #1db954;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .card-content a:hover {
+      color: #17a94d;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 15px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .bottom-nav a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      text-align: center;
+      font-size: 12px;
+      transition: color 0.3s ease;
+    }
+
+    .bottom-nav a i {
+      font-size: 24px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .bottom-nav a:hover {
+      color: #1db954;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="title">Mod</div>
+    <div class="search-bar">
+      <i class="material-icons">search</i>
+      <input type="text" id="search-input" placeholder="Search clients...">
+    </div>
+  </header>
+
+  <!-- Landing Section -->
+  <section class="landing">
+    <h1>Discover Minecraft Bedrock Mods</h1>
+  </section>
+
+  <!-- Cards Section -->
+  <section class="card-container" id="card-container">
+    <!-- Example Card -->
+    <div class="card" data-title="Client A">
+      <img src="https://www.9minecraft.net/wp-content/uploads/2025/01/Available-Inventory-Viewer-Addon-MCPE-Thumbnail.png" alt="Client A">
+      <div class="card-content">
+        <h4>Available Inventory Viewer Addon (1.21) – MCPE/Bedrock Mod</h4>
+        <p>Available Inventory Viewer Addon (1.21) displays the remaining inventory slots on the bottom-right of the HUD and notifies you when the inventory is full.</p>
+        <a href="https://pixelforgenetwork.netlify.app//modsmcpe/availableinventory.html">Learn More</a>
+      </div>
+    </div>
+
+  <script type="text/javascript">
+	atOptions = {
+		'key' : '4dac3e51b521820cd82c1a04f8a84ed4',
+		'format' : 'iframe',
+		'height' : 250,
+		'width' : 300,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/4dac3e51b521820cd82c1a04f8a84ed4/invoke.js"></script>
+  </section>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <a href="index.html" class="active"><i class="material-icons">home</i>Home</a>
+    <a href="Catorgary.html"><i class="material-icons">category</i>Categories</a>
+    <a href="#"><i class="material-icons">update</i>Updates</a>
+    <a href="#"><i class="material-icons">settings</i>Settings</a>
+  </div>
+
+  <!-- JavaScript for Search -->
+  <script>
+    const searchInput = document.getElementById('search-input');
+    const cards = document.querySelectorAll('.card');
+
+    searchInput.addEventListener('input', (e) => {
+      const searchValue = e.target.value.toLowerCase();
+      cards.forEach((card) => {
+        const title = card.getAttribute('data-title').toLowerCase();
+        if (title.includes(searchValue)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
