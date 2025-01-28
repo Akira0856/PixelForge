@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelForge | Minecraft Texture Pack</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0f0f0f;
+      color: #e0e0e0;
+    }
+
+    /* Header */
+    header {
+      background-color: #0f0f0f;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      color: #f39c12;
+    }
+
+    /* Top Section */
+    .top-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      background-color: #0f0f0f;
+    }
+
+    .profile-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .mod-details {
+      flex: 1;
+      margin-left: 20px;
+    }
+
+    .mod-details h2 {
+      font-size: 2rem;
+      margin: 0;
+      color: #f39c12;
+    }
+
+    .mod-details p {
+      margin: 10px 0;
+      color: #b3b3b3;
+    }
+
+    .download-button {
+      padding: 10px 20px;
+      background-color: #f39c12;
+      color: #0f0f0f;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-weight: bold;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .download-button:hover {
+      background-color: #e67e22;
+      transform: scale(1.05);
+    }
+
+    /* Main Image Section */
+    .main-image-section {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .main-image-section img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Horizontal scrollable preview section */
+    .image-preview-section {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 20px;
+      background-color: #0f0f0f;
+    }
+
+    .image-preview-section img {
+      flex-shrink: 0;
+      width: 150px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .image-preview-section img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Description Section */
+    .description-section {
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .description-section h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #f39c12;
+    }
+
+    .description-section a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .description-section a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #0f0f0f;
+      padding: 10px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    footer p {
+      margin: 0;
+      color: #b3b3b3;
+    }
+
+    footer a {
+      color: #f39c12;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>PixelForge</h1>
+  </header>
+
+  <!-- Top Section -->
+  <div class="top-section">
+    <img class="profile-image" src="https://i.ibb.co/6nMfZhd/637641492206125909.png" alt="Profile Image">
+    <div class="mod-details">
+      <h2>Bare Bones x Fresh Animations</h2>
+      <p>Version: 1.0.0 <br> By
+Specimen</p>
+     <a href="https://drive.google.com/uc?export=download&id=16RD6h9YDy6lzdaUFj1iCDRlbI6_P0c3V" download class="download-button">Download Client</a>
+    </div>
+  </div>
+<script type='text/javascript' src='//pl25706367.profitablecpmrate.com/83/62/60/8362609b9befc2c58a388553ec9c6288.js'></script>
+  <!-- Main Image Section -->
+  <div class="main-image-section">
+    <img id="mainImage" src="https://media.forgecdn.net/attachments/387/3/tvmhzol.png" alt="Main Mod Image">
+  </div>
+
+  <!-- Horizontal Scrollable Image Cards -->
+  <div class="image-preview-section">
+    <img src="https://media.forgecdn.net/attachments/387/3/tvmhzol.png" alt="Preview 1" onclick="updateMainImage(this)">
+    <img src="https://media.forgecdn.net/attachments/387/4/op6qgq6.png" alt="Preview 2" onclick="updateMainImage(this)">
+    <img src="https://i.ibb.co/yk1qFnp/5doxxnw.png" alt="Preview 3" onclick="updateMainImage(this)">
+    <img src="https://i.ibb.co/bLMDmZ2/jp2rdxb.png" alt="Preview 4" onclick="updateMainImage(this)">
+    <img src="https://i.ibb.co/VCwM8zH/lds7upl.png" alt="Preview 5" onclick="updateMainImage(this)">
+    <img src="https://i.ibb.co/G2QyMMv/gyblfjm.png" alt="Preview 6" onclick="updateMainImage(this)">
+    <img src="https://i.ibb.co/4JGCZRW/1znpnzo.png" alt="Preview 7" onclick="updateMainImage(this)">
+    <img src="https://i.ibb.co/yqbwtJ3/gy1re92.png" alt="Preview 8" onclick="updateMainImage(this)">
+  </div>
+
+  <!-- Description Section -->
+  <div class="description-section">
+    <h2>Description</h2>
+    <p>
+      <strong>Bare Bones x Fresh Animations</strong>
+    </p>
+    <p>
+      <a href="#">Discord</a> | <a href="#">Planet Minecraft page</a>
+    </p>
+    <p>
+      A Resource pack that makes Bare Bones compatible with Fresh Animations.
+    </p>
+    <h3>What is Bare Bones?</h3>
+    <p>
+      Bare Bones is a texture pack with the purpose of bringing your world and the default Minecraft textures to its 'bare bones.' 
+      It is a simplistic and vibrant pack that is fun to use and makes your Minecraft worlds look colorful!
+    </p>
+    <h3>What is Fresh Animations?</h3>
+    <p>
+      Fresh Animations is a work-in-progress resource pack that gives an overhaul to entity animations in the default look of Minecraft. 
+      The aim is to make the mobs more dynamic and believable. Inspired by Minecraft Dungeons and Minecraft cinematic trailers.
+    </p>
+    <h3>Why do I need to use this pack?</h3>
+    <p><strong>Required:</strong> Entity Model Features | Bare Bones | Fresh Animations</p>
+    <h3>How To Use</h3>
+    <p>
+      Make sure the textures packs are in the right order as shown in the image below:
+    </p>
+    <div style="text-align: center; margin-top: 20px;">
+      <img src="https://i.ibb.co/bRpZ7GX/zX50I7A.png" alt="How To Use Image" style="max-width: 100%; border-radius: 10px;">
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Made with ❤️ by <a href="#">PixelForge Team</a>.</p>
+  </footer>
+
+  <!-- JavaScript for Updating Main Image -->
+  <script>
+    function updateMainImage(img) {
+      const mainImage = document.getElementById("mainImage");
+      mainImage.src = img.src;
+    }
+  </script>
+</body>
+  </html>
