@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERTOX GLOBAL Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --primary-color: #00a8ff;
+            --secondary-color: #0097e6;
+            --bg-dark: #1a1a1a;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --bubble-sent: #00a8ff;
+            --bubble-received: #f1f1f1;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-dark), #2d3436);
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .auth-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--bg-dark), #2d3436);
+            z-index: 2000;
+        }
+
+        .auth-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .auth-form h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+
+        .auth-form button {
+            width: 100%;
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+        }
+
+        .auth-form button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .auth-form .google-btn {
+            background: #db4437;
+        }
+
+        .auth-form .google-btn:hover {
+            background: #c1351d;
+        }
+
+        .auth-form .toggle-auth {
+            color: var(--primary-color);
+            cursor: pointer;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .setup-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .setup-form h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .setup-form input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+
+        .setup-form button {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .setup-form button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .chat-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100%;
+            z-index: 100;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .header {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .group-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .group-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .menu-dots {
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 70%;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message.sent {
+            margin-left: auto;
+            flex-direction: row-reverse;
+        }
+
+        .message-content {
+            background: var(--bubble-received);
+            color: var(--text-dark);
+            padding: 0.8rem;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .message.sent .message-content {
+            background: var(--bubble-sent);
+            color: var(--text-light);
+        }
+
+        .profile-pic {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .username {
+            font-size: 0.8rem;
+            margin-bottom: 0.2rem;
+            color: #666;
+        }
+
+        .message.sent .username {
+            text-align: right;
+        }
+
+        .input-area {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .input-container {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+        }
+
+        .send-btn {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .send-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .trigger-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 1rem 0;
+            animation: slideIn 0.3s ease;
+        }
+
+        .trigger-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .trigger-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .trigger-card p {
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .trigger-card button {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .trigger-card button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .sidebar-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .group-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .group-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .animated-text {
+            position: fixed;
+            font-size: 8rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: popupText 5s ease-in-out infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes popupText {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translateY(100px);
+            }
+            20% {
+                opacity: 0.1;
+                transform: scale(1) translateY(0);
+            }
+            80% {
+                opacity: 0.1;
+                transform: scale(1) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5) translateY(-100px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .message {
+                max-width: 85%;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Authentication Container -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-form">
+            <h2>Welcome to VERTOX GLOBAL</h2>
+            <div id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email">
+                <input type="password" id="loginPassword" placeholder="Password">
+                <button onclick="login()">Login</button>
+                <button class="google-btn" onclick="loginWithGoogle()">Login with Google</button>
+                <span class="toggle-auth" onclick="toggleAuth()">Don't have an account? Register</span>
+            </div>
+            <div id="registerForm" style="display: none;">
+                <input type="email" id="registerEmail" placeholder="Email">
+                <input type="password" id="registerPassword" placeholder="Password">
+                <button onclick="register()">Register</button>
+                <button class="google-btn" onclick="loginWithGoogle()">Register with Google</button>
+                <span class="toggle-auth" onclick="toggleAuth()">Already have an account? Login</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Chat Interface -->
+    <div class="chat-container">
+        <div class="main-chat">
+            <div class="header">
+                <div class="group-info">
+                    <div class="group-icon">VG</div>
+                    <h2>VERTOX GLOBAL</h2>
+                </div>
+                <div class="menu-dots" onclick="toggleSidebar()">⋮</div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <div class="input-area">
+                <div class="input-container">
+                    <input type="text" class="message-input" id="messageInput" placeholder="Type a message...">
+                    <button class="send-btn" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <h3>Other Groups</h3>
+            <div class="sidebar-groups">
+                <div class="group-item">
+                    <div class="group-icon">VT</div>
+                    <span>VERTOX Tech</span>
+                </div>
+                <div class="group-item">
+                    <div class="group-icon">VG</div>
+                    <span>VERTOX Gaming</span>
+                </div>
+                <div class="group-item">
+                    <div class="group-icon">VC</div>
+                    <span>VERTOX Community</span>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+  apiKey: "AIzaSyA8J2CpnOfNUlGRiCgwWjcYrp6Fz9UraBw",
+  authDomain: "vertox-94ce3.firebaseapp.com",
+  projectId: "vertox-94ce3",
+  storageBucket: "vertox-94ce3.firebasestorage.app",
+  messagingSenderId: "1090403125068",
+  appId: "1:1090403125068:web:5a813501021c081aea71e9",
+  measurementId: "G-4MYR2F696Q"
+};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Auth state observer
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                document.getElementById('authContainer').style.display = 'none';
+                // Set user data
+                userData = {
+                    username: user.email.split('@')[0],
+                    profilePic: user.photoURL || 'https://ui-avatars.com/api/?name=' + user.email.split('@')[0]
+                };
+                // Load messages
+                loadMessages();
+            } else {
+                // User is signed out
+                document.getElementById('authContainer').style.display = 'flex';
+            }
+        });
+
+        // Toggle between login and register forms
+        function toggleAuth() {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+        }
+
+        // Email/Password Login
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        // Email/Password Registration
+        async function register() {
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        // Google Sign In
+        async function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                await auth.signInWithPopup(provider);
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        // Load messages from Firestore
+        async function loadMessages() {
+            const messagesRef = db.collection('messages')
+                .orderBy('timestamp')
+                .limit(100);
+            
+            messagesRef.onSnapshot((snapshot) => {
+                messages = [];
+                snapshot.forEach((doc) => {
+                    messages.push(doc.data());
+                });
+                displayMessages();
+            });
+        }
+
+        // Send message to Firestore
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message || !auth.currentUser) return;
+
+            const newMessage = {
+                text: message,
+                sender: userData.username,
+                profilePic: userData.profilePic,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                userId: auth.currentUser.uid,
+                type: 'sent'
+            };
+
+            try {
+                await db.collection('messages').add(newMessage);
+                input.value = '';
+
+                // Check for trigger word
+                if (message.toUpperCase() === 'VERTOX') {
+                    setTimeout(async () => {
+                        const triggerMessage = {
+                            type: 'trigger',
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                            userId: auth.currentUser.uid
+                        };
+                        await db.collection('messages').add(triggerMessage);
+                    }, 500);
+                }
+            } catch (error) {
+                console.error("Error sending message:", error);
+            }
+        }
+
+        // Sign out
+        async function signOut() {
+            try {
+                await auth.signOut();
+            } catch (error) {
+                console.error("Error signing out:", error);
+            }
+        }
+
+        // Animated background text
+        const words = ['WELCOME', 'VERTOX', 'NETWORK'];
+        let currentIndex = 0;
+
+        function createAnimatedText() {
+            const text = document.createElement('div');
+            text.className = 'animated-text';
+            text.textContent = words[currentIndex];
+            text.style.left = Math.random() * 50 + 25 + '%';
+            text.style.top = Math.random() * 50 + 25 + '%';
+            document.body.appendChild(text);
+
+            text.addEventListener('animationend', () => {
+                text.remove();
+                currentIndex = (currentIndex + 1) % words.length;
+                setTimeout(createAnimatedText, 500);
+            });
+        }
+
+        // Start the animation
+        createAnimatedText();
+
+        function displayMessages() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = '';
+
+            messages.forEach(message => {
+                if (message.type === 'trigger') {
+                    const triggerCard = document.createElement('div');
+                    triggerCard.className = 'trigger-card';
+                    triggerCard.innerHTML = `
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80" alt="VERTOX">
+                        <h3>Welcome to VERTOX</h3>
+                        <p>Join our global community of innovators and creators.</p>
+                        <button>Learn More</button>
+                    `;
+                    chatMessages.appendChild(triggerCard);
+                } else {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message ${message.type}`;
+                    messageDiv.innerHTML = `
+                        <img src="${message.profilePic}" class="profile-pic" alt="${message.sender}">
+                        <div>
+                            <div class="username">${message.sender}</div>
+                            <div class="message-content">${message.text}</div>
+                        </div>
+                    `;
+                    chatMessages.appendChild(messageDiv);
+                }
+            });
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Sidebar toggle
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+// User data management
+let userData = {
+  username: '',
+  profilePic: ''
+};
+
+// Check if user is already set up in Firestore
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    db.collection('users').doc(user.uid).get().then(doc => {
+      if (doc.exists) {
+        const data = doc.data();
+        userData.username = data.username;
+        userData.profilePic = data.profilePic;
+        document.getElementById('setupOverlay').style.display = 'none';
+        displayMessages(); // Display messages after setup is complete
+      } else {
+        document.getElementById('setupOverlay').style.display = 'block';
+      }
+    });
+  }
+});
+
+// Setup completion
+function completeSetup() {
+  const username = document.getElementById('usernameInput').value;
+  const profilePicInput = document.getElementById('profilePicInput');
+
+  if (!username || !profilePicInput.files[0]) {
+    alert('Please provide both username and profile picture');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const profilePicData = e.target.result;
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        db.collection('users').doc(user.uid).set({
+          username: username,
+          profilePic: profilePicData
+        }).then(() => {
+          userData = {
+            username: username,
+            profilePic: profilePicData
+          };
+          document.getElementById('setupOverlay').style.display = 'none';
+          displayMessages();
+        });
+      }
+    });
+  };
+  reader.readAsDataURL(profilePicInput.files[0]);
+}
+
+// Chat functionality
+let messages = [];
+
+function sendMessage() {
+  const input = document.getElementById('messageInput');
+  const message = input.value.trim();
+
+  if (!message) return;
+
+  const newMessage = {
+    text: message,
+    sender: userData.username,
+    profilePic: userData.profilePic,
+    timestamp: new Date().toISOString(),
+    type: 'sent'
+  };
+
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      db.collection('messages').add(newMessage).then(() => {
+        displayMessages();
+      });
+    }
+  });
+
+  input.value = '';
+}
+
+function displayMessages() {
+  const chatMessages = document.getElementById('chatMessages');
+  chatMessages.innerHTML = '';
+
+  db.collection('messages').orderBy('timestamp').get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const message = doc.data();
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${message.type}`;
+      messageDiv.innerHTML = `
+<img src="${message.profilePic}" class="profile-pic" alt="${message.sender}">
+<div>
+  <div class="username">${message.sender}</div>
+  <div class="message-content">${message.text}</div>
+</div>
+`;
+      chatMessages.appendChild(messageDiv);
+    });
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+}
+
+// Sidebar toggle
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('active');
+}
+
+// Enter key to send message
+document.getElementById('messageInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
+
+    </script>
+</body>
+</html>
